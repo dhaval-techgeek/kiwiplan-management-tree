@@ -2,6 +2,7 @@ package com.kiwiplan.management.tree;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -65,7 +66,7 @@ public class ManagementTree {
 	 * @param employeeList
 	 */
 	private static void displayManagementTree(List<Employee> employeeList) {
-		Map<Integer, List<Employee>> empHierarchyMap = new ConcurrentHashMap<Integer, List<Employee>>();
+		Map<Integer, List<Employee>> empHierarchyMap = new HashMap<Integer, List<Employee>>();
 		Optional<Employee> manager = employeeList.stream()
 									   			 .filter(emp -> emp.getManagerId() == 0)
 									   			 .findFirst();
@@ -78,7 +79,7 @@ public class ManagementTree {
 		System.out.println(managerEmp.getName());
 		for(Employee e :  employeeList)
 		{
-			prepareHierarmap(employeeList, e, empHierarchyMap);
+			prepareHierarchyMap(employeeList, e, empHierarchyMap);
 		}
 		
 		if(isSubOrdinateExists(empHierarchyMap, manager.get().getId()))
@@ -131,7 +132,7 @@ public class ManagementTree {
 	 * @param superier
 	 * @param empHierarchyMap
 	 */
-	private static void prepareHierarmap(List<Employee> employeeList, Employee superier, Map<Integer, List<Employee>> empHierarchyMap) {
+	private static void prepareHierarchyMap(List<Employee> employeeList, Employee superier, Map<Integer, List<Employee>> empHierarchyMap) {
 		empHierarchyMap.put(superier.getId(), employeeList.stream()
 	   			 .filter(emp -> emp.getManagerId() == superier.getId())
 	   			 .collect(Collectors.toList()));
